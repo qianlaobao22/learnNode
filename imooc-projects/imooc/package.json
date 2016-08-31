@@ -1,0 +1,22 @@
+{
+  "name": "imooc",
+  "version": "0.0.1",
+  "description": "imooc movie",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "imooc movie"
+  },
+  "keywords": [
+    "imooc"
+  ],
+  "author": "qianqian",
+  "license": "ISC",
+  "dependencies": {
+    "cookie-parser": "^1.4.3",
+    "express-session": "^1.14.1"
+  }
+}

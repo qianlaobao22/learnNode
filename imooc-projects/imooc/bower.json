@@ -1,0 +1,22 @@
+{
+  "name": "imooc",
+  "description": "imooc movie",
+  "main": "",
+  "keywords": [
+    "imooc"
+  ],
+  "authors": [
+    "qianqian"
+  ],
+  "license": "MIT",
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/lib",
+    "test",
+    "tests"
+  ]
+}
