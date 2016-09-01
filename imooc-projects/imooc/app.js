@@ -2,19 +2,31 @@ var express = require('express')
 var bodyParser = require('body-parser')
 var path = require('path')
 var mongoose = require('mongoose')
+var session = require('express-session')
+var mongoStore = require('connect-mongo')(session)
 var _ = require('underscore')
 var Movie = require('./models/movie')
 var User = require('./models/user')
 var port = process.env.PORT || 3000
 var app = express()
+var dbUrl = 'mongodb://127.0.0.1/imooc'
 var cookieParser = require('cookie-parser')
-var session = require('express-session')
 
+//我做了点修改，看看管不管用
 
 mongoose.Promise = global.Promise
-mongoose.connect('mongodb://127.0.0.1/imooc')
+mongoose.connect(dbUrl)
 app.use(cookieParser())
-app.use(session({secret: 'imooc',resave: false,saveUninitialized: false}))
+app.use(session({
+    secret: 'imooc',
+    resave: false,
+    saveUninitialized: false,
+    store: new mongoStore({
+        url:dbUrl,
+        collection: 'sessions'
+
+    })
+}))
 app.set('views','./views/other')
 app.set('view engine','jade')
 //app.use(express.bodyParser())
@@ -32,6 +44,20 @@ app.listen(port)
 
 console.log('imoo started on port '+port)
 
+//pre handle user
+
+app.use(function(req,res,next){
+     var _user = req.session.user
+
+     if(_user){
+       
+        app.locals.user = _user
+     }
+
+     return next()
+    
+})
+
 
 
 //index page 
@@ -40,6 +66,9 @@ console.log('imoo started on port '+port)
 app.get('/',function(req,res){
     console.log('user in session:')
     console.log(req.session.user)
+
+    
+
 	Movie.fetch(function(err,movies){
       if(err){
       	console.log(err)
@@ -112,6 +141,15 @@ app.post('/user/signin',function(req,res){
             }
         })
     })
+})
+
+//logout
+
+app.get('/logout',function(req,res){
+    delete req.session.user
+    delete app.locals.user
+    res.redirect('/')
+
 })
 
 
