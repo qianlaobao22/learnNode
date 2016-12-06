@@ -25,7 +25,7 @@ exports.showSignin = function(req,res){
 exports.signup = function(req,res){
     var _user = req.body.user
     
-    User.find({name:_user.name},function(err,user){
+    User.findOne({name:_user.name},function(err,user){
         if(err){
             console.log(err)
         }
@@ -42,7 +42,7 @@ exports.signup = function(req,res){
         if(err){
             console.log(err)
         }
-        res.redirect('/admin/userlist')
+        res.redirect('/')
     }) 
         }
     })
@@ -125,7 +125,7 @@ exports.signinRequired = function(req,res, next){
 
 exports.adminRequired = function(req,res,next){
     var user = req.session.user
-
+     console.log(user)
     if(user.role<=10){
         return res.redirect('/signin')
     }
